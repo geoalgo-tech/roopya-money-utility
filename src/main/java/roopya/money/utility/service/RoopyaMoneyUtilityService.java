@@ -1,14 +1,18 @@
 package roopya.money.utility.service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Random;
-import java.util.regex.*;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.springframework.boot.web.servlet.server.Encoding;
 import org.springframework.stereotype.Service;
 
 
@@ -83,17 +87,23 @@ public class RoopyaMoneyUtilityService {
     }
 	
 	
-	/*
-	public String generateToken(String str_Key, String deviceId, String mobileNumber)
+	
+	public String generateToken(String str_Key, String deviceId, String mobileNumber) throws InvalidKeyException, NoSuchAlgorithmException
     {
         //ErrorLog("generateToken :: str_Key: " + str_Key + " deviceId: " + deviceId + " mobileNumber: " + mobileNumber, " Start");
 		System.out.println("generateToken :: str_Key: " + str_Key + " deviceId: " + deviceId + " mobileNumber: " + mobileNumber + " Start");
         
-        String str_Salt = RegexState.Replace(deviceId, "[^a-zA-Z0-9]", "");
+        //String str_Salt = RegexState.Replace(deviceId, "[^a-zA-Z0-9]", "");
+		String str_Salt = deviceId.replaceAll("[^a-zA-Z0-9]", "");
        
         //ErrorLog("generateToken :: str_Key: " + str_Key + " deviceId: " + deviceId + " mobileNumber: " + mobileNumber, " Response :: str_Salt : " + str_Salt);
         
-        String str_Date = System.DateTime.Today.ToString("yyyy") + "0" + System.DateTime.Today.ToString("MM") + System.DateTime.Today.ToString("dd");
+        //String str_Date = System.DateTime.Today.ToString("yyyy") + "0" + System.DateTime.Today.ToString("MM") + System.DateTime.Today.ToString("dd");
+		Date today = new Date();
+		SimpleDateFormat  sdf = new SimpleDateFormat("MM");
+		
+		String str_Date = LocalDate.now().getYear() + "0" + sdf.format(today) + LocalDate.now().getDayOfMonth();
+		
         
         //ErrorLog("generateToken :: str_Key: " + str_Key + " deviceId: " + deviceId + " mobileNumber: " + mobileNumber, " Response :: str_Date : " + str_Date);
         
@@ -142,8 +152,12 @@ public class RoopyaMoneyUtilityService {
 	
 	public static String getHashSha256(String text)
     {
-        byte[] bytes = Encoding.UTF8.GetBytes(text);
+        //byte[] bytes = Encoding.UTF8.GetBytes(text);
+		byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+        
+		/*
         SHA256Managed hashstring = new SHA256Managed();
+		
         byte[] hash = hashstring.ComputeHash(bytes);
         String hashString = String.Empty;
         for(byte x in hash)
@@ -151,12 +165,25 @@ public class RoopyaMoneyUtilityService {
             hashString += String.Format("{0:x2}", x);
         }
         return hashString;
+        */
+		
+		 StringBuilder hexString = new StringBuilder(2 * bytes.length);
+		    for (int i = 0; i < bytes.length; i++) {
+		        String hex = Integer.toHexString(0xff & bytes[i]);
+		        if(hex.length() == 1) {
+		            hexString.append('0');
+		        }
+		        hexString.append(hex);
+		    }
+		    return hexString.toString();
     }
 
 	 
-	private String CreateToken(String message, String secret)
+	private String CreateToken(String message, String secret) throws InvalidKeyException, NoSuchAlgorithmException
     {
         secret = secret == null ? "" : secret;
+        
+        /*
         var encoding = new System.Text.ASCIIEncoding();
         byte[] keyByte = encoding.GetBytes(secret);
         byte[] messageBytes = encoding.GetBytes(message);
@@ -165,9 +192,14 @@ public class RoopyaMoneyUtilityService {
             byte[] hashmessage = hmacsha256.ComputeHash(messageBytes);
             return Convert.ToBase64String(hashmessage);
         }
+        */
         
+        byte[] keyByte = secret.getBytes(StandardCharsets.US_ASCII);
+        byte[] messageBytes = message.getBytes(StandardCharsets.US_ASCII);
+        
+        return new HmacUtils().generateHmac256(message, keyByte).toString();
     }
 
-   */
+   
 	
 }
