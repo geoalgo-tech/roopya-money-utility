@@ -34,7 +34,7 @@ RUN mvn package
 
 # cp target/roopya.money.utilities-0.0.1-SNAPSHOT.jar /opt/app/roopya.money.utilities-0.0.1-SNAPSHOT.jar
 #COPY ${JAR_FILE} roopya.money.utilities-0.0.1-SNAPSHOT.jar
-COPY target/roopya-money-utility-0.0.1-SNAPSHOT.jar roopya-money-utility-0.0.1-SNAPSHOT.jar
+COPY /target/roopya-money-utility-0.0.1-SNAPSHOT.jar roopya-money-utility-0.0.1-SNAPSHOT.jar
 
 # java -jar /opt/app/app.jar
 ENTRYPOINT ["java","-jar","/app/roopya-money-utility-0.0.1-SNAPSHOT.jar"]
