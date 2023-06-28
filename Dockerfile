@@ -1,9 +1,9 @@
 
-FROM eclipse-temurin:10-jdk-alpine
-VOLUME /tmp
-ARG JAR_FILE
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+#FROM eclipse-temurin:10-jdk-alpine
+#VOLUME /tmp
+#ARG JAR_FILE
+#COPY ${JAR_FILE} app.jar
+#ENTRYPOINT ["java","-jar","/app.jar"]
 
 
 #FROM eclipse-temurin:8-jdk-alpine
@@ -13,23 +13,23 @@ ENTRYPOINT ["java","-jar","/app.jar"]
 #ENTRYPOINT ["java","-jar","/roopya.money.utilities-0.0.1-SNAPSHOT.jar"]
 
 # For Java 8, try this
-#FROM openjdk:8-jdk-alpine
+FROM openjdk:8-jdk-alpine
 
 # For Java 11, try this
-#FROM adoptopenjdk/openjdk11:alpine-jre
+FROM adoptopenjdk/openjdk11:alpine-jre
 
 # Refer to Maven build -> finalName
-#ARG JAR_FILE=target/roopya.money.utilities-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=target/roopya-money-utility-0.0.1-SNAPSHOT.jar
 
 # cd /opt/app
-#WORKDIR /opt/app
+WORKDIR /opt/app
 
 # cp target/roopya.money.utilities-0.0.1-SNAPSHOT.jar /opt/app/roopya.money.utilities-0.0.1-SNAPSHOT.jar
 #COPY ${JAR_FILE} roopya.money.utilities-0.0.1-SNAPSHOT.jar
-#COPY target/roopya.money.utilities-0.0.1-SNAPSHOT.jar roopya.money.utilities-0.0.1-SNAPSHOT.jar
+COPY target/roopya-money-utility-0.0.1-SNAPSHOT.jar roopya-money-utility-0.0.1-SNAPSHOT.jarr
 
 # java -jar /opt/app/app.jar
-#ENTRYPOINT ["java","-jar","/roopya.money.utilities-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","/roopya-money-utility-0.0.1-SNAPSHOT.jar"]
 
 
 
