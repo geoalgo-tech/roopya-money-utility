@@ -13,23 +13,31 @@
 #ENTRYPOINT ["java","-jar","/roopya.money.utilities-0.0.1-SNAPSHOT.jar"]
 
 # For Java 8, try this
-FROM openjdk:8-jdk-alpine
+#FROM openjdk:8-jdk-alpine
+FROM maven:3.8.4-openjdk-11-slim
 
 # For Java 11, try this
-FROM adoptopenjdk/openjdk11:alpine-jre
+#FROM adoptopenjdk/openjdk11:alpine-jre
 
 # Refer to Maven build -> finalName
-ARG JAR_FILE=target/roopya-money-utility-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=/target/roopya-money-utility-0.0.1-SNAPSHOT.jar
 
 # cd /opt/app
-WORKDIR /opt/app
+WORKDIR /app
+
+# Copy the Maven project files to the container
+COPY pom.xml .
+COPY src ./src
+
+# Build the Spring Boot application
+RUN mvn package
 
 # cp target/roopya.money.utilities-0.0.1-SNAPSHOT.jar /opt/app/roopya.money.utilities-0.0.1-SNAPSHOT.jar
 #COPY ${JAR_FILE} roopya.money.utilities-0.0.1-SNAPSHOT.jar
-COPY target/roopya-money-utility-0.0.1-SNAPSHOT.jar roopya-money-utility-0.0.1-SNAPSHOT.jarr
+COPY target/roopya-money-utility-0.0.1-SNAPSHOT.jar roopya-money-utility-0.0.1-SNAPSHOT.jar
 
 # java -jar /opt/app/app.jar
-ENTRYPOINT ["java","-jar","/roopya-money-utility-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","/app/roopya-money-utility-0.0.1-SNAPSHOT.jar"]
 
 
 
