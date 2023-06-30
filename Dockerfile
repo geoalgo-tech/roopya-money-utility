@@ -70,6 +70,7 @@ COPY src ./src
 RUN mvn dependency:go-offline -B
 # Copy the application source code 
 RUN mvn clean install
+# End of Docker file
 # Build the Spring Boot application
 RUN cd target
 COPY target/roopya-money-utility-0.0.1-SNAPSHOT.jar /app.jar
