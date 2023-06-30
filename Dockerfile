@@ -71,7 +71,7 @@ RUN mvn dependency:go-offline -B
 # Copy the application source code 
 RUN mvn clean install
 # Build the Spring Boot application
-RUN cd target
-COPY target/*.jar /app.jar
+RUN cd /app/target
+COPY /app/target/*.jar /app.jar
 # Set the command to run the Spring Boot application when the container starts
 CMD ["java", "-jar", "/app.jar"]
