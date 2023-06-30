@@ -75,4 +75,3 @@ RUN cd /app/target
 COPY /app/target/roopya-money-utility-0.0.1-SNAPSHOT.jar /app.jar
 # Set the command to run the Spring Boot application when the container starts
 CMD ["java", "-jar", "/app.jar"]
-
