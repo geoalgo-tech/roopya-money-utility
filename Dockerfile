@@ -62,7 +62,7 @@
 # Use a base image with Java and Maven installed
 FROM maven:3.8.4-openjdk-11-slim
 # Set the working directory inside the container
-WORKDIR /app
+#WORKDIR /app
 # Copy the Maven project files to the container
 COPY pom.xml .
 COPY src ./src
@@ -71,7 +71,7 @@ RUN mvn dependency:go-offline -B
 # Copy the application source code 
 RUN mvn clean install
 # Build the Spring Boot application
-RUN cd /app/target
-COPY /app/target/roopya-money-utility-0.0.1-SNAPSHOT.jar /app.jar
+RUN cd target
+COPY target/roopya-money-utility-0.0.1-SNAPSHOT.jar /app.jar
 # Set the command to run the Spring Boot application when the container starts
 CMD ["java", "-jar", "/app.jar"]
